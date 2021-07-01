@@ -2,29 +2,36 @@
   <v-container>
     <v-layout>
       <v-flex xs12>
-        <v-toolbar>DATOS DE ENTRADA</v-toolbar>
+        <v-toolbar>
+          <v-spacer></v-spacer>
+          <v-toolbar-title>
+            DATOS DE ENTRADA
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+
         <v-row>
           <v-col cols="12" sm="6" md="3">
             <v-text-field
-              label="Longitud"
+              label="Pos X"
               type="number"
               v-model.number="body.x" 
-              placeholder="Escriba la longitud"
+              placeholder="4.20"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <v-text-field
-              label="Latitud"
+              label="Pos Y"
               type="number"
               v-model.number="body.y" 
-              placeholder="Escriba la latitud"
+              placeholder="4.20"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <v-text-field
               label="K"
               v-model="body.k" 
-              placeholder="Escriba número de vecinos"
+              placeholder="K"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="3">
@@ -33,77 +40,75 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-toolbar>DATOS DE SALIDA</v-toolbar>
 
-        <v-divider
-            class="mx-4"
-            inset
-          ></v-divider>
+        <v-toolbar>
+          <v-spacer></v-spacer>
+          <v-toolbar-title>
+            DATOS DE SALIDA
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
         
         <v-row justify="center">
-          <template>
-            <v-data-table
-              :headers="headers_distancias"
-              :items="distancias"
-              sort-by="calories"
-              class="elevation-1"
-            >
-              <template v-slot:top>
-                <v-toolbar
-                  flat
-                >
-                  <v-toolbar-title>DISTANCIA EUCLIDIANA</v-toolbar-title>
-                  <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                  ></v-divider>
-                  <v-spacer></v-spacer>
-                </v-toolbar>
-              </template>
-              <template v-slot:no-data>
-                <v-btn>
-                  NO HAY DATA
-                </v-btn>
-              </template>
-            </v-data-table>
-          </template>
-        </v-row>
+          <v-col>
+            <template>
+              <v-data-table
+                :headers="headers_distancias"
+                :items="distancias"
+                sort-by="calories"
+                class="elevation-1"
+              >
+                <template v-slot:top>
+                  <v-toolbar
+                    flat
+                  >
+                    <v-spacer></v-spacer>
+                    <v-toolbar-title>DISTANCIA EUCLIDIANA</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                  </v-toolbar>
+                </template>
+                <template v-slot:no-data>
+                  <v-btn>
+                    NO HAY DATA
+                  </v-btn>
+                </template>
+              </v-data-table>
+            </template>
+          </v-col>
 
-        <v-divider
+          <v-divider
             class="mx-4"
             inset
+            vertical
           ></v-divider>
 
-          <v-row justify="center">
-          <template>
-            <v-data-table
-              :headers="headers_clusters"
-              :items="clusters"
-              sort-by="calories"
-              class="elevation-1"
-            >
-              <template v-slot:top>
-                <v-toolbar
-                  flat
-                >
-                  <v-toolbar-title>VECINOS</v-toolbar-title>
-                  <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                  ></v-divider>
-                  <v-spacer></v-spacer>
-                </v-toolbar>
-              </template>
-              <template v-slot:no-data>
-                <v-btn>
-                  NO HAY DATA
-                </v-btn>
-              </template>
-            </v-data-table>
-          </template>
+          <v-col>
+            <template>
+              <v-data-table
+                :headers="headers_clusters"
+                :items="clusters"
+                sort-by="calories"
+                class="elevation-1"
+              >
+                <template v-slot:top>
+                  <v-toolbar
+                    flat
+                  >
+                    <v-spacer></v-spacer>
+                    <v-toolbar-title>VECINOS</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                  </v-toolbar>
+                </template>
+                <template v-slot:no-data>
+                  <v-btn>
+                    NO HAY DATA
+                  </v-btn>
+                </template>
+              </v-data-table>
+            </template>
+          </v-col>
         </v-row>
+
       </v-flex>
     </v-layout>
     
@@ -123,12 +128,12 @@
         },
 
       headers_distancias: [
-        { text: 'Longitud', value: 'x' },
-        { text: 'Latitud', value: 'y' },
+        { text: 'Pos X', value: 'x' },
+        { text: 'Pos Y', value: 'y' },
         { text: 'Euclidiana', value: 'euclidiana' },
         { text: 'Clase', value: 'label' },
-        { text: 'Tipo', value: 'tipo' },
-        { text: 'Estado', value: 'estado' },
+        { text: 'E1', value: 'extra1' },
+        { text: 'E2', value: 'extra2' },
       ],
       
       distancias: [],
@@ -162,7 +167,7 @@
           
         }
 
-        axios.post(axios.defaults.baseURL + '/postman/KnnConcu  ', body_aux)
+        axios.post(axios.defaults.baseURL + '/api/knn', body_aux)
         .then(res => {
           //console.log('Info del Servidor:')
           //console.log(res)
@@ -186,8 +191,8 @@
           distancia.y = data[i].punto.y
           distancia.euclidiana = data[i].distancia
           distancia.label = data[i].punto.label
-          distancia.tipo = data[i].tipo
-          distancia.estado = data[i].estado
+          distancia.extra1 = data[i].anadido
+          distancia.extra2 = data[i].anadido2
 
           
           me.distancias.push(distancia)
