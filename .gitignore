@@ -1,24 +1,23 @@
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
-*.o
-*.a
-*.so
+.DS_Store
+node_modules
+/dist
 
-# Folders
-_obj
-_test
 
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
+# local env files
+.env.local
+.env.*.local
 
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-_testmain.go
-
-*.exe
-*.test
-*.prof
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
